@@ -1,0 +1,13 @@
+# Environnement virtuel
+venv_streamlit/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Config VS Code
+.vscode/
+
+# Fichier personnel
+instructions.txt

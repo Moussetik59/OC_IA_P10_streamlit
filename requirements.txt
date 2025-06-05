@@ -1,0 +1,7 @@
+streamlit
+requests
+azure-storage-blob
+azure-identity
+python-dotenv
+numpy
+pandas

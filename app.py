@@ -47,20 +47,25 @@ def load_users():
         return []
 
 # Début de l'interface utilisateur Streamlit
+
+# --- Ajout du logo ---
+st.image("logo.png", width=300)
+
+# --- Titre de la page ---
 st.title("Système de Recommandation d'Articles")
 
-# Introduction
+# --- Introduction ---
 st.markdown(
     """
-    Cette application vous permet d'obtenir des recommandations personnalisées
-    d'articles en fonction de votre historique de lecture.
+    Cette application permet de visualiser les recommandations d'articles
+    générées par le moteur de recommandation **MyContent**.
 
-    Sélectionnez un ID utilisateur dans la liste ci-dessous pour voir les articles
-    les plus pertinents pour vous.
+    Vous pouvez sélectionner un utilisateur ci-dessous pour obtenir les
+    **5 articles les plus recommandés** pour lui, parmi l'ensemble des articles disponibles.
     """
 )
 
-# Chargement et affichage de la liste des utilisateurs
+# --- Chargement et affichage de la liste des utilisateurs ---
 user_ids = load_users()
 if user_ids:
     user_id = st.selectbox("ID utilisateur :", user_ids)
@@ -68,7 +73,7 @@ else:
     st.error("Impossible de charger la liste des utilisateurs.")
     st.stop()
 
-# Bouton pour obtenir les recommandations
+# --- Bouton pour obtenir les recommandations ---
 if st.button("Obtenir des recommandations"):
     if not api_url:
         st.error("L'URL de l'API n'est pas configurée (AZURE_FUNCTION_URL).")
@@ -86,18 +91,35 @@ if st.button("Obtenir des recommandations"):
                 response.raise_for_status()
                 recommendations = response.json()
 
-                # Affichage des résultats
+                # --- Affichage des résultats ---
                 if not recommendations:
                     st.warning("Aucune recommandation disponible pour cet utilisateur.")
                 else:
-                    st.subheader(f"Articles recommandés pour l'utilisateur {user_id} :")
-                    st.markdown("_Du plus pertinent au moins pertinent._")
+                    st.subheader(f"Top 5 des articles recommandés pour l'utilisateur {user_id} :")
+                    st.markdown("_Articles classés par niveau de recommandation._")
+
+                    # Icônes pour les 3 premiers
+                    medals = ["🥇", "🥈", "🥉"]
 
                     # Affichage stylisé
                     for idx, article in enumerate(recommendations, start=1):
-                        st.write(f"**{idx}. Article ID : {article}**")
+                        if idx <= 3:
+                            st.write(f"{medals[idx-1]} **Article ID : {article}**")
+                        else:
+                            st.write(f"{idx}. Article ID : {article}")
 
             except requests.exceptions.Timeout:
                 st.error("Erreur : Délai d’attente dépassé pour l'API.")
             except requests.exceptions.RequestException as e:
                 st.error(f"Erreur lors de l'appel à l'API : {e}")
+
+# --- Footer ---
+st.markdown(
+    """
+    <hr style="border:1px solid gray">
+    <div style='text-align: center; color: gray; font-size: small;'>
+        Projet P10 - MyContent | Développé par [Votre Nom] | Formation Ingénieur IA - 2025
+    </div>
+    """,
+    unsafe_allow_html=True
+)

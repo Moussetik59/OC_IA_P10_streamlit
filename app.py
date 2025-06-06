@@ -48,15 +48,8 @@ def load_users():
 
 # Début de l'interface utilisateur Streamlit
 
-# --- Ajout du logo centré ---
-st.markdown(
-    """
-    <div style="text-align: center;">
-        <img src="logo.png" width="300">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# --- Ajout du logo ---
+st.image("logo.png", width=300)
 
 # --- Titre de la page ---
 st.title("Système de Recommandation d'Articles")

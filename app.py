@@ -48,8 +48,15 @@ def load_users():
 
 # Début de l'interface utilisateur Streamlit
 
-# --- Ajout du logo ---
-st.image("logo.png", width=300)
+# --- Ajout du logo centré ---
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <img src="logo.png" width="300">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # --- Titre de la page ---
 st.title("Système de Recommandation d'Articles")
@@ -118,7 +125,7 @@ st.markdown(
     """
     <hr style="border:1px solid gray">
     <div style='text-align: center; color: gray; font-size: small;'>
-        Projet P10 - MyContent | Développé par [Votre Nom] | Formation Ingénieur IA - 2025
+        OpenClassrooms Projet 10 - MyContent | Développé par Vincent Dujardin | Formation Ingénieur IA - 2025
     </div>
     """,
     unsafe_allow_html=True

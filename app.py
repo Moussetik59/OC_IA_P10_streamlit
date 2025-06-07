@@ -9,7 +9,7 @@ from azure.storage.blob import BlobServiceClient
 
 # Constantes
 CONTAINER_NAME = "models"
-BLOB_NAME = "clicks_sample.csv"
+BLOB_NAME = "precomputed_recos.csv"
 
 # Chargement des variables d'environnement
 if os.path.exists(".env"):
@@ -30,7 +30,7 @@ blob_service_client = BlobServiceClient(
 @st.cache_data
 def load_users():
     """
-    Charge le fichier clicks_sample.csv depuis Azure Blob Storage
+    Charge le fichier precomputed_recos.csv depuis Azure Blob Storage
     et retourne la liste triée des user_id disponibles.
     """
     try:

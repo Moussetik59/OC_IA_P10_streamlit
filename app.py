@@ -65,17 +65,33 @@ st.markdown(
     """
 )
 
-# --- Chargement et affichage de la liste des utilisateurs ---
+# --- Chargement de la liste des utilisateurs ---
 user_ids = load_users()
-if user_ids:
-    user_id = st.selectbox("ID utilisateur :", user_ids)
+min_user_id = min(user_ids) if user_ids else 0
+max_user_id = max(user_ids) if user_ids else 0
+
+# --- Saisie manuelle de l'utilisateur ---
+st.markdown("**Veuillez saisir un ID utilisateur compris entre** `{}` **et** `{}` :".format(min_user_id, max_user_id))
+
+user_id_input = st.number_input(
+    "ID utilisateur", 
+    min_value=min_user_id, 
+    max_value=max_user_id, 
+    step=1
+)
+
+# --- Validation : vérifier que l'ID existe ---
+if user_id_input in user_ids:
+    user_id_valid = True
+    user_id = int(user_id_input)
 else:
-    st.error("Impossible de charger la liste des utilisateurs.")
-    st.stop()
+    user_id_valid = False
 
 # --- Bouton pour obtenir les recommandations ---
 if st.button("Obtenir des recommandations"):
-    if not api_url:
+    if not user_id_valid:
+        st.error(f"Erreur : l'ID utilisateur {int(user_id_input)} n'existe pas dans les données.")
+    elif not api_url:
         st.error("L'URL de l'API n'est pas configurée (AZURE_FUNCTION_URL).")
     else:
         # Construction de l'URL de requête

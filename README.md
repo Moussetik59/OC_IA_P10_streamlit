@@ -1,35 +1,29 @@
 # MyContent - Interface de Recommandation d'Articles
 
-Cette application permet de visualiser les recommandations d'articles pour les utilisateurs du service **MyContent**.
+Cette interface permet aux utilisateurs de **MyContent** de visualiser leurs recommandations d'articles.
 
-L'interface est développée en **Streamlit** et se connecte à une **API Azure Functions** pour récupérer les recommandations.
+Elle est développée avec **Streamlit** et consomme l'API REST déployée sur Azure.
 
 ---
 
 ## Fonctionnement
 
-- La liste des utilisateurs est extraite du fichier `clicks_sample.csv` stocké dans **Azure Blob Storage**.
-- Les recommandations sont pré-calculées et stockées dans un fichier `precomputed_recos.csv` lu directement par l'API.
-- Le Streamlit envoie une requête vers l'API en fonction de l'ID utilisateur sélectionné.
+- L'utilisateur saisit un `user_id` dans l'interface.
+- Streamlit envoie une requête à l'API Azure Function.
+- L'API consulte le fichier `precomputed_recos.csv` sur Blob Storage et renvoie les recommandations.
+- Streamlit affiche les 5 articles recommandés.
 
 ---
 
-## Architecture
+## Architecture de l'application
 
-Utilisateur → Interface Streamlit → Appel API Azure Function → Lecture precomputed_recos.csv → Réponse API → Affichage
+```text
+Utilisateur → Interface Streamlit → Appel API Azure Function → Lecture precomputed_recos.csv → Réponse → Affichage des recommandations
+```
 
 ---
 
-## Lancement local
+## Remarque
 
-1️⃣ Installer les dépendances :
-
-```bash
-pip install -r requirements.txt
-```
-
-2️⃣ Lancer l'application :
-
-```bash
-streamlit run app.py
-```
+- La liste des `user_id` autorisés provient désormais de `precomputed_recos.csv` (full dataset).
+- L'interface est conçue pour démontrer un fonctionnement complet en conditions réelles (MVP).
